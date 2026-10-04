@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var script = document.createElement('script');
     
   script.charset = "UTF-8";
-  script.src     = "{{ .Site.Data.resources.analytics.busuanzi }}";
+  script.src     = "{{ hugo.Data.resources.analytics.busuanzi }}";
   script.async   = false
   script.defer   = true
   

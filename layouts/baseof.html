@@ -4,7 +4,7 @@
 {{ $isComment := .Params.comment.enable | default .Site.Params.comments.enable }}
 {{ .Scratch.Set "isComment" $isComment }}
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}" data-theme="{{ .Scratch.Get "theme" }}">
+<html lang="{{ .Site.Language.Locale }}" data-theme="{{ .Scratch.Get "theme" }}">
 
 <head>
   {{ partial "head.html" . }}

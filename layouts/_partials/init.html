@@ -1,7 +1,7 @@
 {{/* Use to define global variables */}}
 
 {{ $curMajorVer := int (index (split hugo.Version ".") 1) }}
-{{ $requreVer := .Site.Data.config.hugoVersion }}
+{{ $requreVer := hugo.Data.config.hugoVersion }}
 {{ $minMajorVer := int (index (split $requreVer ".") 1) }}
 {{ if lt $curMajorVer $minMajorVer }}
   {{ errorf "当前 Hugo 版本为 %s 小于 %s，请到官方地址下载 Hugo 最新版本：https://github.com/gohugoio/hugo/releases 。" hugo.Version $requreVer }}  
@@ -26,7 +26,7 @@
 {{ if eq $vendor "local" }}
   {{ $router = dict "url" (printf "%sjs/3rd" .Site.BaseURL) "name" $vendor "type" "modern" }}
 {{ else }}
-  {{ range .Site.Data.resources.vendors }}
+  {{ range hugo.Data.resources.vendors }}
     {{ if eq .name $vendor }}
       {{ $router = . }}
       {{ break }}
@@ -40,10 +40,10 @@
 {{ $config := dict
   "hostname"    .Site.BaseURL
   "root"        "/"
-  "lang"        .Site.LanguageCode
+  "lang"        .Site.Language.Locale
   "vendor"      (dict "plugins" $vendor "router" $router)
   "darkmode"    .Site.Params.darkmode
-  "version"     .Site.Data.config.version
+  "version"     hugo.Data.config.version
   "scheme"      .Site.Params.scheme
   "sidebar"     .Site.Params.sidebar
   "copybtn"     .Site.Params.codeblock.copyBtn
@@ -85,8 +85,8 @@
 
 {{ if .Site.Params.algoliaSearch.enable }}
   {{ $algoliaSearch := dict 
-    "js"        .Site.Data.resources.algolia
-    "instantjs" .Site.Data.resources.instant
+    "js"        hugo.Data.resources.algolia
+    "instantjs" hugo.Data.resources.instant
     "cfg"       .Site.Params.algoliaSearch
   }}
   {{ $config = merge $config (dict "algolia" $algoliaSearch) }}
@@ -94,8 +94,8 @@
 
 {{ with .Site.Params.waline }}
 {{ $waline := dict 
-  "js"  $.Site.Data.resources.waline.js
-  "css" $.Site.Data.resources.waline.css
+  "js"  hugo.Data.resources.waline.js
+  "css" hugo.Data.resources.waline.css
   "cfg" .
 }}
 {{ $config = merge $config (dict "waline" $waline) }}
@@ -103,8 +103,8 @@
 
 {{ with .Site.Params.waline3 }}
 {{ $waline := dict 
-  "js"  $.Site.Data.resources.waline3.js
-  "css" $.Site.Data.resources.waline3.css
+  "js"  hugo.Data.resources.waline3.js
+  "css" hugo.Data.resources.waline3.css
   "cfg" .
 }}
 {{ $config = merge $config (dict "waline3" $waline) }}
@@ -112,7 +112,7 @@
 
 {{ with .Site.Params.giscus }}
 {{ $giscus := dict 
-  "js"  $.Site.Data.resources.giscus.js
+  "js"  hugo.Data.resources.giscus.js
   "cfg" .
 }}
 {{ $config = merge $config (dict "giscus" $giscus) }}  
@@ -120,21 +120,21 @@
 
 {{ with .Site.Params.artalk }}
 {{ $artalk := dict 
-  "js"  $.Site.Data.resources.artalk.js
-  "css" $.Site.Data.resources.artalk.css
+  "js"  hugo.Data.resources.artalk.js
+  "css" hugo.Data.resources.artalk.css
   "cfg" .
 }}
 {{ $config = merge $config (dict "artalk" $artalk) }}
 {{ end }}
 
 {{ with .Site.Params.livere }}
-{{ $livere := dict "js" $.Site.Data.resources.livere.js }}
+{{ $livere := dict "js" hugo.Data.resources.livere.js }}
 {{ $config = merge $config (dict "livere" $livere) }}
 {{ end }}
 
 {{ with .Site.Params.utterances }}
 {{ $utterances := dict 
-  "js"  $.Site.Data.resources.utterances.js
+  "js"  hugo.Data.resources.utterances.js
   "cfg" .
 }}
 {{ $config = merge $config (dict "utterances" $utterances) }}
@@ -142,7 +142,7 @@
 
 {{ with .Site.Params.twikoo }}
 {{ $twikoo := dict
-  "js"  $.Site.Data.resources.twikoo.js
+  "js"  hugo.Data.resources.twikoo.js
   "cfg" .
 }}
 {{ $config = merge $config (dict "twikoo" $twikoo) }}
@@ -154,7 +154,7 @@
 
 {{ if isset . "sharethis" }}
   {{ $sharethis := dict
-    "js" $.Site.Data.resources.share.sharethis.js
+    "js" hugo.Data.resources.share.sharethis.js
     "id" .sharethis.id
   }}
   {{ $share = merge $share (dict "sharethis" $sharethis) }}
@@ -162,7 +162,7 @@
 
 {{ if isset . "addtoany" }}
   {{ $addtoany := dict
-    "js" $.Site.Data.resources.share.addtoany.js
+    "js" hugo.Data.resources.share.addtoany.js
     "locale" .addtoany.locale
     "num" .addtoany.num_services
   }}
@@ -180,10 +180,14 @@
 
 {{ with .Site.Params.analytics.laId }}
 {{ $lawidget := dict
-  "js" $.Site.Data.resources.analytics.laWidget
+  "js" hugo.Data.resources.analytics.laWidget
   "id" .
 }}
 {{ $config = merge $config (dict "lawidget" $lawidget) }}
+{{ end }}
+
+{{ with .Site.Params.tabs }}
+{{ $config = merge $config (dict "stickytabs" .sticky) }}
 {{ end }}
 
 {{ $globalVars.Set "config" $config }}

@@ -1,5 +1,5 @@
 {{/* Loading all page need scripts */}}
-{{ $jsRes := .Site.Data.resources.js }}
+{{ $jsRes := hugo.Data.resources.js }}
 {{ $vendor := .Site.Params.vendors.plugins }}
 {{ $router := .Scratch.Get "router" }}
 {{ range $jsRes }} 

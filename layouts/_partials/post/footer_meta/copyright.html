@@ -25,8 +25,8 @@
       {{ end }}
     </li>
     {{/* 计算链接中的语言 */}}
-    {{ $lang := .Site.LanguageCode | upper }}
-    {{ $langCode := substr .Site.LanguageCode 0 2 }}
+    {{ $lang := .Site.Language.Locale | upper }}
+    {{ $langCode := substr .Site.Language.Locale 0 2 }}
     {{ if eq $lang "ZH-CN" "ZH" "ZH-CHS" }}
       {{ $langCode = "zh-hans" }}
     {{ end }}
