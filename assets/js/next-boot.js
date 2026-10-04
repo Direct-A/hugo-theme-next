@@ -61,6 +61,7 @@ NexT.boot.refresh = function() {
 
   NexT.utils.fmtSiteInfo();
   NexT.utils.wrapTableWithBox();
+  NexT.utils.registerTabsTag();
 
   if (NexT.CONFIG.isMultiLang) {
     NexT.utils.registerLangSelect();
@@ -72,7 +73,8 @@ NexT.boot.refresh = function() {
   if (NexT.CONFIG.page.expired) NexT.utils.calPostExpiredDate();
   if (NexT.CONFIG.page.music) NexT.utils.registerAPlayer();
 
-  NexT.utils.registerImageViewer();
+  // Guard: image viewer vendor script may fail to load (CDN/network).
+  if (window.Viewer) NexT.utils.registerImageViewer();
   NexT.utils.registerPostReward();
 
   if(NexT.CONFIG.page.comments) {    
@@ -117,6 +119,8 @@ NexT.boot.motion = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
   NexT.boot.registerEvents();
-  NexT.boot.motion();
+  // Guard: don't let a missing anime.js (CDN/network failure) break the
+  // whole boot chain — refresh() carries essential features like tabs.
+  if (window.anime) NexT.boot.motion();
   NexT.boot.refresh();
 });

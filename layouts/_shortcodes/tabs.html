@@ -1,27 +1,30 @@
 {{- /* NexT-style tabs container. Child "tab" shortcodes register themselves
-       in the page store; evaluating .InnerDeindent triggers them first, then
-       we render the ul.nav-tabs / div.tab-content markup that tabs.scss
-       styles and NexT.utils.registerTabsTag wires up.
+       in this shortcode's store (via .Parent.Store); here we render the
+       ul.nav-tabs / div.tab-content markup that tabs.scss styles and
+       NexT.utils.registerTabsTag wires up.
        Usage:
-         {{< tabs >}}
+         {{< tabs >}}          or   {{< tabs active="2" >}}  (1-based, default 1)
            {{% tab tabName="First" %}} ... {{% /tab %}}
            {{< tab tabName="Second" >}} ... {{< /tab >}}
          {{< /tabs >}}                                                      */ -}}
-{{- $noop := .InnerDeindent -}}
-{{- $key := printf "tabs-%d" .Ordinal -}}
-{{- $tabs := .Page.Store.Get $key -}}
+{{- /* Evaluate .Inner once: required by Hugo for shortcodes with a closing
+       tag. Child tab output is discarded; children only register data.  */ -}}
+{{- $trigger := .Inner -}}
+{{- $tabs := .Store.Get "tabs" -}}
 {{- if $tabs }}
+{{- $active := int (.Get "active" | default 1) -}}
+{{- if or (lt $active 1) (gt $active (len $tabs)) -}}{{- $active = 1 -}}{{- end }}
 <div class="tabs">
   <ul class="nav-tabs">
     {{- range $i, $t := $tabs }}
-    <li class="tab{{ if eq $i 0 }} active{{ end }}">
+    <li class="tab{{ if eq $i (sub $active 1) }} active{{ end }}">
       <a href="#{{ $t.id }}">{{ $t.name }}</a>
     </li>
     {{- end }}
   </ul>
   <div class="tab-content">
     {{- range $i, $t := $tabs }}
-    <div class="tab-pane{{ if eq $i 0 }} active{{ end }}" id="{{ $t.id }}">
+    <div class="tab-pane{{ if eq $i (sub $active 1) }} active{{ end }}" id="{{ $t.id }}">
       {{ $t.content }}
     </div>
     {{- end }}
