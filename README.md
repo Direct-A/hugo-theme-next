@@ -162,6 +162,22 @@ tags:
 ---
 ```
 
+## 🧩 Custom Shortcodes
+
+The theme ships with a set of custom shortcodes for rich content layout in posts:
+
+| Shortcode | Description |
+| :-------: | :---------- |
+| `quote` | Centered blockquote |
+| `note` | Notice blocks (default / primary / info / success / warning / danger) |
+| `tabs` / `tab` | Tabbed content switcher |
+| `bilibili` | Embed Bilibili videos |
+| `music` | Music player (APlayer + MetingJS) |
+| `mermaid` | Mermaid diagram rendering |
+| `grouppicture` / `gp` | Group Pictures: arrange 2~10 pictures in 45 preset layouts |
+
+For full syntax and live demos, see the example post: [Custom Shortcodes Demo](exampleSite/content/post/12-shortcodes/index.en-us.md).
+
 ## 🎉 User's Cases
 
 - [Hugo Docs & Demo](https://hugo-next.eu.org/)

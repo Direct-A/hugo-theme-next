@@ -154,3 +154,76 @@ Based on [Player](https://github.com/DIYgod/APlayer) And [MatingJS](https://gith
 ```
 
 {{< music url="/music/sky.mp3" name="City of the Sky" artist="Hayao Miyazaki" cover="/music/gongqijun.jpg" autoplay="true" >}}
+## Group Pictures
+
+Arrange multiple pictures in preset layouts, ported from the tag plugin of the same name in NexT for Hexo. It supports 45 layouts for 2 to 10 pictures. Syntax:
+
+```markdown
+{{</* grouppicture [number]-[layout] */>}}
+  ![](/images/a.jpg)
+  ![](/images/b.jpg)
+  ![](/images/c.jpg)
+{{</* /grouppicture */>}}
+or use the short alias:
+{{</* gp [number]-[layout] */>}}
+  ...
+{{</* /gp */>}}
+```
+
+Parameters:
+
+- **number**: optional, total number of pictures (2~10)
+- **layout**: optional, layout index. See the diagrams and the reference table below for available layouts per picture count
+- Without any parameter, pictures are arranged 3 per row by default; invalid parameters fall back to the default layout as well
+
+Layout diagrams (2~6 pictures):
+
+![Layouts for 2 to 6 pictures](group-picture-1.png)
+
+Layout diagrams (7~10 pictures):
+
+![Layouts for 7 to 10 pictures](group-picture-2.png)
+
+Layout reference table ("pictures per row" listed from top to bottom):
+
+| Pictures | Available layouts (index: pictures per row) |
+| :------: | :------------------------------------------ |
+| 2 | 1: 1+1; 2: 2 |
+| 3 | 1: 1+2; 2: 2+1; 3: 3 |
+| 4 | 1: 1+2+1; 2: 1+3; 3: 2+2; 4: 3+1 |
+| 5 | 1: 1+2+2; 2: 2+1+2; 3: 2+3; 4: 3+2 |
+| 6 | 1: 1+2+3; 2: 1+3+2; 3: 2+1+3; 4: 2+2+2; 5: 3+3 |
+| 7 | 1: 1+2+2+2; 2: 1+3+3; 3: 2+2+3; 4: 2+3+2; 5: 3+2+2 |
+| 8 | 1: 1+2+2+3; 2: 1+2+3+2; 3: 1+3+2+2; 4: 2+2+2+2; 5: 2+3+3; 6: 3+2+3; 7: 3+3+2 |
+| 9 | 1: 1+2+3+3; 2: 1+3+2+3; 3: 2+2+2+3; 4: 2+2+3+2; 5: 2+3+2+2; 6: 3+2+2+2; 7: 3+3+3 |
+| 10 | 1: 1+3+3+3; 2: 2+2+3+3; 3: 2+3+2+3; 4: 2+3+3+2; 5: 3+2+2+3; 6: 3+2+3+2; 7: 3+3+2+2 |
+
+For example, `4-2` applies the second layout to 4 pictures (1 in the first row, 3 in the second):
+
+```markdown
+{{</* grouppicture 4-2 */>}}
+  ![](/imgs/wechat-pay.png)
+  ![](/imgs/ali-pay.png)
+  ![](/music/gongqijun.jpg)
+  ![](/imgs/wechat-pay.png)
+{{</* /grouppicture */>}}
+```
+
+Live demo:
+
+{{< grouppicture 4-2 >}}
+![](/imgs/wechat-pay.png)
+![](/imgs/ali-pay.png)
+![](/music/gongqijun.jpg)
+![](/imgs/wechat-pay.png)
+{{< /grouppicture >}}
+
+Three pictures in one row (`3-3`):
+
+{{< gp 3-3 >}}
+![](/imgs/wechat-pay.png)
+![](/imgs/ali-pay.png)
+![](/music/gongqijun.jpg)
+{{< /gp >}}
+
+> **Tip**: the theme ships with Viewer.js built in — all post images (including group pictures) support click-to-zoom out of the box; please use absolute paths for images inside group pictures.

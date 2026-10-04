@@ -170,6 +170,22 @@ tags:
 ---
 ```
 
+## 🧩 自定义短代码
+
+主题内置了一套自定义短代码（Shortcodes），便于在文章中快速排版丰富的内容：
+
+| 短代码 | 功能说明 |
+| :----: | :------- |
+| `quote` | 居中块引用 |
+| `note` | 信息提示块（default / primary / info / success / warning / danger） |
+| `tabs` / `tab` | 标签页切换 |
+| `bilibili` | 嵌入 Bilibili 视频 |
+| `music` | 音乐播放器（APlayer + MetingJS） |
+| `mermaid` | Mermaid 图表渲染 |
+| `grouppicture` / `gp` | 组图：2~10 张图片按 45 种预设布局组合排列 |
+
+完整语法说明与效果演示见示例文章：[自定义短语示例](exampleSite/content/post/12-shortcodes/index.md)。
+
 ## 🎉 用户案例
 
 - [Hugo Docs & Demo](https://hugo-next.eu.org/)

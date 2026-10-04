@@ -1,0 +1,59 @@
+{{/*
+  Group Pictures shortcode（移植自 hexo-theme-next/scripts/tags/group-pictures.js）
+
+  用法：
+    {{< grouppicture 4-2 >}}
+      ![](/images/a.jpg)
+      ![](/images/b.jpg)
+      ![](/images/c.jpg)
+      ![](/images/d.jpg)
+    {{< /grouppicture >}}
+
+  布局表："总数-布局序号" => 每行图片数（逗号分隔），与 NexT for Hexo 完全一致。
+*/}}
+{{ $layouts := dict
+  "2-1" "1,1" "2-2" "2"
+  "3-1" "1,2" "3-2" "2,1" "3-3" "3"
+  "4-1" "1,2,1" "4-2" "1,3" "4-3" "2,2" "4-4" "3,1"
+  "5-1" "1,2,2" "5-2" "2,1,2" "5-3" "2,3" "5-4" "3,2"
+  "6-1" "1,2,3" "6-2" "1,3,2" "6-3" "2,1,3" "6-4" "2,2,2" "6-5" "3,3"
+  "7-1" "1,2,2,2" "7-2" "1,3,3" "7-3" "2,2,3" "7-4" "2,3,2" "7-5" "3,2,2"
+  "8-1" "1,2,2,3" "8-2" "1,2,3,2" "8-3" "1,3,2,2" "8-4" "2,2,2,2" "8-5" "2,3,3" "8-6" "3,2,3" "8-7" "3,3,2"
+  "9-1" "1,2,3,3" "9-2" "1,3,2,3" "9-3" "2,2,2,3" "9-4" "2,2,3,2" "9-5" "2,3,2,2" "9-6" "3,2,2,2" "9-7" "3,3,3"
+  "10-1" "1,3,3,3" "10-2" "2,2,3,3" "10-3" "2,3,2,3" "10-4" "2,3,3,2" "10-5" "3,2,2,3" "10-6" "3,2,3,2" "10-7" "3,3,2,2"
+}}
+
+{{ $content := .Inner | markdownify }}
+{{ $pictures := findRE `(?s)(<a[^>]*>.*?</a>)|(<img[^>]*>)` $content }}
+
+{{ $rule := "" }}
+{{ with .Get 0 }}
+  {{ $rule = index $layouts . }}
+{{ end }}
+
+<div class="group-picture">
+{{- if $rule }}
+  {{- $offset := 0 }}
+  {{- range (split $rule ",") }}
+    {{- $count := int . }}
+  <div class="group-picture-row">
+    {{- range (first $count (after $offset $pictures)) }}
+    <div class="group-picture-column">{{ . | safeHTML }}</div>
+    {{- end }}
+  </div>
+    {{- $offset = add $offset $count }}
+  {{- end }}
+{{- else }}
+  {{/* 默认布局：每行 3 张 */}}
+  {{- $rowSize := 3 }}
+  {{- $offset := 0 }}
+  {{- range (seq (int (math.Ceil (div (float (len $pictures)) (float $rowSize))))) }}
+  <div class="group-picture-row">
+    {{- range (first $rowSize (after $offset $pictures)) }}
+    <div class="group-picture-column">{{ . | safeHTML }}</div>
+    {{- end }}
+  </div>
+    {{- $offset = add $offset $rowSize }}
+  {{- end }}
+{{- end }}
+</div>
