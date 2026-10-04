@@ -1,0 +1,17 @@
+{{- /* Inner shortcode of "tabs": registers itself in the parent shortcode's
+       store; the parent "tabs" shortcode renders the final markup.
+       Notes:
+       - .Store has no append-to-slice "Add" semantics like the deprecated
+         .Scratch, so we do Get + append + Set instead.
+       - A page's content is rendered more than once (.Summary, .Content,
+         .ContentWithoutSummary all trigger shortcode execution) and the
+         store is shared between those renders, so skip duplicates by id.
+       Usage:
+         {{% tab tabName="First" %}} ...markdown... {{% /tab %}}
+         or {{< tab tabName="Second" >}} ...html... {{< /tab >}}           */ -}}
+{{- $name := .Get "tabName" | default (.Get 0) | default "Tab" -}}
+{{- $id := printf "tab-%d-%d" .Parent.Ordinal .Ordinal -}}
+{{- $tabs := .Parent.Store.Get "tabs" | default (slice) -}}
+{{- if not (where $tabs "id" $id) -}}
+  {{- .Parent.Store.Set "tabs" ($tabs | append (dict "id" $id "name" $name "content" .Inner)) -}}
+{{- end -}}

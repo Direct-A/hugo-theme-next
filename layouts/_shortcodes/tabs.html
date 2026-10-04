@@ -1,0 +1,30 @@
+{{- /* NexT-style tabs container. Child "tab" shortcodes register themselves
+       in the page store; evaluating .InnerDeindent triggers them first, then
+       we render the ul.nav-tabs / div.tab-content markup that tabs.scss
+       styles and NexT.utils.registerTabsTag wires up.
+       Usage:
+         {{< tabs >}}
+           {{% tab tabName="First" %}} ... {{% /tab %}}
+           {{< tab tabName="Second" >}} ... {{< /tab >}}
+         {{< /tabs >}}                                                      */ -}}
+{{- $noop := .InnerDeindent -}}
+{{- $key := printf "tabs-%d" .Ordinal -}}
+{{- $tabs := .Page.Store.Get $key -}}
+{{- if $tabs }}
+<div class="tabs">
+  <ul class="nav-tabs">
+    {{- range $i, $t := $tabs }}
+    <li class="tab{{ if eq $i 0 }} active{{ end }}">
+      <a href="#{{ $t.id }}">{{ $t.name }}</a>
+    </li>
+    {{- end }}
+  </ul>
+  <div class="tab-content">
+    {{- range $i, $t := $tabs }}
+    <div class="tab-pane{{ if eq $i 0 }} active{{ end }}" id="{{ $t.id }}">
+      {{ $t.content }}
+    </div>
+    {{- end }}
+  </div>
+</div>
+{{- end -}}
