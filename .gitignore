@@ -12,3 +12,6 @@ exampleSite/dev-startup.sh
 
 # vscode
 .vscode/
+
+# Hugo build lock
+.hugo_build.lock
